@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm/Sửa Học viên</title>
+    <script type="module" src="index.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Menu điều hướng -->
+    <nav class="bg-blue-600 text-white p-4">
+        <ul class="flex space-x-6">
+            <li><a href="index.html" class="hover:underline">Danh sách</a></li>
+            <li><a href="add-edit-course.html" class="hover:underline">Thêm/Sửa Khóa học</a></li>
+            <li><a href="add-edit-student.html" class="hover:underline">Thêm/Sửa Học viên</a></li>
+            <li><a href="register-course.html" class="hover:underline">Đăng ký Khóa học</a></li>
+        </ul>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Thêm/Sửa Học viên</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <form id="studentForm" class="space-y-4">
+                <input type="hidden" id="editStudentId">
+                <div>
+                    <label for="studentName" class="block text-sm font-medium">Tên học viên</label>
+                    <input type="text" id="studentName" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label for="studentEmail" class="block text-sm font-medium">Email</label>
+                    <input type="email" id="studentEmail" class="w-full border rounded p-2" required>
+                </div>
+                <button type="submit" id="studentFormButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Thêm</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

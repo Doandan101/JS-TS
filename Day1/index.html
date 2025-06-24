@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Khóa học Trực Tuyến</title>
+    <script type="module" src="index.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6 text-indigo-800">Hệ thống Quản lý Khóa học</h1>
+
+        <!-- Form thêm/sửa khóa học -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4" id="courseFormTitle">Thêm Khóa học</h2>
+            <form id="courseForm" class="space-y-4">
+                <input type="hidden" id="editCourseId">
+                <div>
+                    <label class="block text-sm font-medium">Tên khóa học</label>
+                    <input type="text" id="courseName" class="w-full border rounded p-2" required placeholder="Nhập tên khóa học" title="Nhập tên khóa học">
+                </div>
+                <div>
+                    <label for="courseType" class="block text-sm font-medium">Loại khóa học</label>
+                    <select id="courseType" class="w-full border rounded p-2" title="Chọn loại khóa học">
+                        <option value="Course">Khóa học thường</option>
+                        <option value="LiveCourse">Khóa học trực tiếp</option>
+                        <option value="RecordedCourse">Khóa học ghi sẵn</option>
+                    </select>
+                </div>
+                <div id="liveCourseFields" class="hidden">
+                    <label class="block text-sm font-medium">Link Zoom</label>
+                    <input type="text" id="zoomLink" class="w-full border rounded p-2" placeholder="Nhập link Zoom" title="Nhập link Zoom">
+                </div>
+                <div id="recordedCourseFields" class="hidden">
+                    <label class="block text-sm font-medium">Thời lượng (phút)</label>
+                    <input type="number" id="duration" class="w-full border rounded p-2" placeholder="Nhập thời lượng (phút)" title="Nhập thời lượng (phút)">
+                </div>
+                <button type="submit" id="courseFormButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Thêm</button>
+            </form>
+        </div>
+
+        <!-- Form thêm học viên -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4">Thêm Học viên</h2>
+            <form id="studentForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium">Tên học viên</label>
+                    <input type="text" id="studentName" class="w-full border rounded p-2" required placeholder="Nhập tên học viên" title="Nhập tên học viên">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Email</label>
+                    <input type="email" id="studentEmail" class="w-full border rounded p-2" required placeholder="Nhập email học viên" title="Nhập email học viên">
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Thêm</button>
+            </form>
+        </div>
+
+        <!-- Form đăng ký khóa học -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4">Đăng ký Khóa học</h2>
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label for="studentSelect" class="block text-sm font-medium">Chọn học viên</label>
+                    <select id="studentSelect" class="w-full border rounded p-2" aria-label="Chọn học viên">
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+                <div>
+                    <label for="courseSelect" class="block text-sm font-medium">Chọn khóa học</label>
+                    <select id="courseSelect" class="w-full border rounded p-2" aria-label="Chọn khóa học">
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Đăng ký</button>
+            </form>
+        </div>
+
+        <!-- Hiển thị danh sách khóa học và học viên -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4 text-indigo-800">Danh sách</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Danh sách khóa học -->
+                <div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-700">Khóa học</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600 uppercase text-xs font-semibold">
+                                    <th class="py-2 px-4 border-b">Tên khóa học</th>
+                                    <th class="py-2 px-4 border-b">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courseList" class="text-gray-700">
+                                <!-- Dữ liệu sẽ được thêm bởi JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Danh sách học viên -->
+                <div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-700">Học viên</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600 uppercase text-xs font-semibold">
+                                    <th class="py-2 px-4 border-b">Tên học viên</th>
+                                    <th class="py-2 px-4 border-b">Email</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentList" class="text-gray-700">
+                                <!-- Dữ liệu sẽ được thêm bởi JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

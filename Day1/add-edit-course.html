@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm/Sửa Khóa học</title>
+    <script type="module" src="index.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Menu điều hướng -->
+    <nav class="bg-blue-600 text-white p-4">
+        <ul class="flex space-x-6">
+            <li><a href="index.html" class="hover:underline">Danh sách</a></li>
+            <li><a href="add-edit-course.html" class="hover:underline">Thêm/Sửa Khóa học</a></li>
+            <li><a href="add-edit-student.html" class="hover:underline">Thêm/Sửa Học viên</a></li>
+            <li><a href="register-course.html" class="hover:underline">Đăng ký Khóa học</a></li>
+        </ul>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Thêm/Sửa Khóa học</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <form id="courseForm" class="space-y-4">
+                <input type="hidden" id="editCourseId">
+                <div>
+                    <label for="courseName" class="block text-sm font-medium">Tên khóa học</label>
+                    <input type="text" id="courseName" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label for="courseType" class="block text-sm font-medium">Loại khóa học</label>
+                    <select id="courseType" class="w-full border rounded p-2">
+                        <option value="Course">Khóa học thường</option>
+                        <option value="LiveCourse">Khóa học trực tiếp</option>
+                        <option value="RecordedCourse">Khóa học ghi sẵn</option>
+                    </select>
+                </div>
+                <div id="liveCourseFields" class="hidden">
+                    <label for="zoomLink" class="block text-sm font-medium">Link Zoom</label>
+                    <input type="text" id="zoomLink" class="w-full border rounded p-2">
+                </div>
+                <div id="recordedCourseFields" class="hidden">
+                    <label for="duration" class="block text-sm font-medium">Thời lượng (phút)</label>
+                    <input type="number" id="duration" class="w-full border rounded p-2">
+                </div>
+                <button type="submit" id="courseFormButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Thêm</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

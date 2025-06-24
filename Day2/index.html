@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Watcher</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6 font-sans">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">Weather Watcher</h1>
+    <div class="mb-4 flex gap-2">
+      <input id="cityInput" type="text" placeholder="Thêm thành phố" class="border p-2 rounded flex-grow">
+      <button id="addCityBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Thêm</button>
+    </div>
+    <div id="weatherList" class="space-y-4"></div>
+    <div id="alerts" class="mt-4"></div>
+  </div>
+
+  <script>
+    // Mô phỏng API thời tiết
+    function fetchWeather(city) {
+      return new Promise((resolve, reject) => {
+        const delay = Math.random() * 2000 + 1000; // 1-3 giây
+        setTimeout(() => {
+          if (Math.random() < 0.1) { // 10% khả năng lỗi
+            reject(new Error(`Lỗi khi lấy dữ liệu thời tiết cho ${city}`));
+          } else {
+            const temp = Math.floor(Math.random() * 50); // Nhiệt độ ngẫu nhiên 0-50°C
+            resolve({ city, temp, timestamp: new Date() });
+          }
+        }, delay);
+      });
+    }
+
+    // Callback Hell (chỉ để minh họa)
+    function fetchWeatherCallbackHell(city1, city2, city3, callback) {
+      fetchWeather(city1).then(data1 => {
+        fetchWeather(city2).then(data2 => {
+          fetchWeather(city3).then(data3 => {
+            callback([data1, data2, data3]);
+          }).catch(err => callback(null, err));
+        }).catch(err => callback(null, err));
+      }).catch(err => callback(null, err));
+    }
+
+    // Refactor với async/await
+    async function fetchWeatherAsync(city1, city2, city3) {
+      try {
+        const results = await Promise.all([
+          fetchWeather(city1),
+          fetchWeather(city2),
+          fetchWeather(city3)
+        ]);
+        return results;
+      } catch (err) {
+        throw err;
+      }
+    }
+
+    // Advanced Promises: Promise.race
+    async function fetchFastestWeather(city) {
+      const mirrors = [fetchWeather(city), fetchWeather(city), fetchWeather(city)];
+      return await Promise.race(mirrors);
+    }
+
+    // Advanced Promises: Promise.allSettled
+    async function fetchAllWeather(cities) {
+      const promises = cities.map(city => fetchWeather(city));
+      return await Promise.allSettled(promises);
+    }
+
+    // Promise Pool: Giới hạn 2 request song song
+    async function promisePool(tasks, limit) {
+      const results = [];
+      const executing = [];
+
+      async function consume() {
+        if (tasks.length === 0) return;
+        const task = tasks.shift();
+        const promise = task().then(result => {
+          results.push(result);
+          executing.splice(executing.indexOf(promise), 1);
+          return consume();
+        });
+        executing.push(promise);
+        if (executing.length < limit && tasks.length > 0) {
+          return consume();
+        }
+      }
+
+      await Promise.all(Array(Math.min(limit, tasks.length)).fill().map(consume));
+      return results;
+    }
+
+    // Observer Pattern: WeatherStation
+    class WeatherStation {
+      constructor() {
+        this.listeners = [];
+        this.cityData = new Map();
+        this.errorCounts = new Map();
+      }
+
+      subscribe(listener) {
+        this.listeners.push(listener);
+      }
+
+      unsubscribe(listener) {
+        this.listeners = this.listeners.filter(l => l !== listener);
+      }
+
+      notify(data) {
+        this.listeners.forEach(listener => listener(data));
+      }
+
+      async startPolling(city) {
+        if (this.errorCounts.has(city)) return; // Đã dừng do lỗi
+        this.errorCounts.set(city, 0);
+        const loop = async () => {
+          try {
+            const data = await fetchFastestWeather(city);
+            this.cityData.set(city, data);
+            this.errorCounts.set(city, 0); // Reset lỗi
+            this.notify({ type: 'update', city, data });
+          } catch (err) {
+            const errors = (this.errorCounts.get(city) || 0) + 1;
+            this.errorCounts.set(city, errors);
+            this.notify({ type: 'error', city, error: err.message });
+            if (errors >= 3) {
+              this.notify({ type: 'stopped', city, reason: '3 lần lỗi liên tiếp' });
+              this.errorCounts.delete(city);
+              return;
+            }
+          }
+          setTimeout(loop, 5000); // Cập nhật mỗi 5 giây
+        };
+        loop();
+      }
+
+      addCity(city) {
+        if (!this.cityData.has(city)) {
+          this.startPolling(city);
+        }
+      }
+
+      removeCity(city) {
+        this.cityData.delete(city);
+        this.errorCounts.delete(city);
+        this.notify({ type: 'remove', city });
+      }
+    }
+
+    // Functional Programming
+    const celsiusToFahrenheit = c => (c * 9/5) + 32;
+    const isHot = temp => temp > 35;
+
+    // Pipe function
+    const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
+
+    // Currying
+    const logTemp = unit => temp => {
+      const value = unit === 'F' ? celsiusToFahrenheit(temp) : temp;
+      return `${temp}°C (${value}°${unit})`;
+    };
+    const logCelsius = logTemp('C');
+    const logFahrenheit = logTemp('F');
+
+    // Observers
+    const uiObserver = ({ type, city, data, error, reason }) => {
+      const weatherList = document.getElementById('weatherList');
+      if (type === 'update') {
+        const elementId = `city-${city.replace(/\s+/g, '-')}`;
+        let element = document.getElementById(elementId);
+        if (!element) {
+          element = document.createElement('div');
+          element.id = elementId;
+          element.className = 'bg-white p-4 rounded shadow flex justify-between items-center';
+          weatherList.appendChild(element);
+        }
+        const processedTemp = pipe(
+          temp => ({ ...data, temp }),
+          data => ({ ...data, displayTemp: logFahrenheit(data.temp) }),
+          data => ({ ...data, isHot: isHot(data.temp) })
+        )(data.temp);
+        element.innerHTML = `
+          <div>
+            <h2 class="text-xl font-semibold">${city}</h2>
+            <p>Nhiệt độ: ${processedTemp.displayTemp}</p>
+            <p class="${processedTemp.isHot ? 'text-red-500' : ''}">
+              ${processedTemp.isHot ? 'Cảnh báo: Nhiệt độ cao!' : 'Bình thường'}
+            </p>
+            <p>Cập nhật: ${new Date(data.timestamp).toLocaleTimeString()}</p>
+          </div>
+          <button onclick="weatherStation.removeCity('${city}')" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Xóa</button>
+        `;
+      } else if (type === 'error') {
+        const element = document.getElementById(`city-${city.replace(/\s+/g, '-')}`);
+        if (element) {
+          element.innerHTML += `<p class="text-red-500">Lỗi: ${error}</p>`;
+        }
+      } else if (type === 'stopped' || type === 'remove') {
+        const element = document.getElementById(`city-${city.replace(/\s+/g, '-')}`);
+        if (element) element.remove();
+        if (type === 'stopped') {
+          const alerts = document.getElementById('alerts');
+          alerts.innerHTML += `<p class="text-red-500">Dừng cập nhật ${city}: ${reason}</p>`;
+        }
+      }
+    };
+
+    const alertObserver = ({ type, city, data }) => {
+      if (type === 'update' && isHot(data.temp)) {
+        const alerts = document.getElementById('alerts');
+        alerts.innerHTML += `<p class="text-red-500 font-bold">Cảnh báo: ${city} có nhiệt độ cao ${data.temp}°C!</p>`;
+      }
+    };
+
+    const logObserver = ({ type, city, data, error }) => {
+      if (type === 'update') {
+        console.log(`Log: ${city} - ${logCelsius(data.temp)}`);
+      } else if (type === 'error') {
+        console.log(`Log lỗi: ${city} - ${error}`);
+      }
+    };
+
+    // Khởi tạo WeatherStation
+    const weatherStation = new WeatherStation();
+    weatherStation.subscribe(uiObserver);
+    weatherStation.subscribe(alertObserver);
+    weatherStation.subscribe(logObserver);
+
+    // Xử lý thêm thành phố
+    document.getElementById('addCityBtn').addEventListener('click', () => {
+      const cityInput = document.getElementById('cityInput');
+      const city = cityInput.value.trim();
+      if (city) {
+        weatherStation.addCity(city);
+        cityInput.value = '';
+      }
+    });
+
+    // Khởi động với 3 thành phố mặc định
+    weatherStation.addCity('Hà Nội');
+    weatherStation.addCity('TP.HCM');
+    weatherStation.addCity('Đà Nẵng');
+
+    // Bonus: Fetch nhiều thành phố với promisePool
+    const cities = ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Huế', 'Cần Thơ'];
+    promisePool(cities.map(city => () => fetchWeather(city)), 2).then(results => {
+      console.log('Kết quả promisePool:', results);
+    });
+  </script>
+</body>
+</html>

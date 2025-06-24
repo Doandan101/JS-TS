@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phân Tích Hành Vi Người Dùng</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Phân Tích Hành Vi Người Dùng</h1>
+    <div class="controls">
+      <label for="strategySelect">Chọn chiến lược phân tích:</label>
+      <select id="strategySelect">
+        <option value="basic">Basic Analytics</option>
+        <option value="time">Time-based Analytics</option>
+        <option value="ai">AI Enhanced Analytics</option>
+      </select>
+      <button id="loginBtn">Đăng nhập</button>
+      <button id="logoutBtn">Đăng xuất</button>
+    </div>
+    <div class="actions">
+      <button id="clickBtn">Click Me!</button>
+      <div id="scrollArea">Kéo xuống để test Scroll</div>
+    </div>
+    <div class="results">
+      <h2>Kết quả phân tích</h2>
+      <pre id="result"></pre>
+    </div>
+    <div class="logs">
+      <h2>Logs</h2>
+      <pre id="logs"></pre>
+    </div>
+  </div>
+  <script src="main.js" type="module"></script>
+</body>
+</html>
