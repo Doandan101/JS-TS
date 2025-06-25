@@ -1,0 +1,141 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6fb;
+    margin: 0;
+    padding: 0;
+    color: #222;
+}
+
+header {
+    background: #4f8cff;
+    color: #fff;
+    padding: 32px 0 16px 0;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+    max-width: 1100px;
+    margin: 32px auto 0 auto;
+}
+
+section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 28px 32px 24px 32px;
+    min-width: 320px;
+    max-width: 370px;
+    flex: 1 1 340px;
+}
+
+h2 {
+    margin-top: 0;
+    color: #4f8cff;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+    padding: 10px 12px;
+    border: 1px solid #d0d7e6;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f7faff;
+    transition: border 0.2s;
+}
+
+input:focus {
+    border: 1.5px solid #4f8cff;
+    outline: none;
+    background: #fff;
+}
+
+button {
+    background: #4f8cff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #2563eb;
+}
+
+#contacts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#contacts li {
+    background: #f7faff;
+    margin-bottom: 12px;
+    padding: 12px 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 1px 4px rgba(79,140,255,0.05);
+}
+
+#contacts li span {
+    flex: 1;
+}
+
+#contacts button {
+    background: #ff4f4f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin-left: 6px;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+#contacts button:hover {
+    background: #d90429;
+}
+
+#search-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#search {
+    padding: 10px 12px;
+    border: 1px solid #d0d7e6;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f7faff;
+}
+
+footer {
+    text-align: center;
+    padding: 18px 0 10px 0;
+    background: #f0f4fa;
+    color: #888;
+    margin-top: 40px;
+    font-size: 1rem;
+    border-top: 1px solid #e3e8f0;
+}

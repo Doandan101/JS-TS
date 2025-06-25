@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Contact Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Smart Contact Manager</h1>
+    </header>
+    <main>
+        <section id="contact-form">
+            <h2>Add Contact</h2>
+            <form id="add-contact">
+                <input type="text" id="name" placeholder="Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="tel" id="phone" placeholder="Phone" required>
+                <button type="submit">Add Contact</button>
+            </form>
+        </section>
+        <section id="contact-list">
+            <h2>Contact List</h2>
+            <ul id="contacts"></ul>
+        </section>
+        <section id="search-contact">
+            <h2>Search Contact</h2>
+            <input type="text" id="search" placeholder="Search by name or email">
+            <button id="search-button">Search</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; Đoàn Tâm Đan 2025</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
