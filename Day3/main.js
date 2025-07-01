@@ -86,12 +86,12 @@ worker.onmessage = (e) => {
   service.notifyObservers(e.data);
 };
 
-// Gửi kết quả lên server mỗi 10s (Bonus)
+// Gửi kết quả lên server mỗi 3s (Bonus)
 setInterval(() => {
   if (user.isLoggedIn) {
     analyzeWithWorker();
   }
-}, 10000);
+}, 3000);
 
 // Khởi tạo chiến lược mặc định
 service.setStrategy(new BasicAnalytics());
