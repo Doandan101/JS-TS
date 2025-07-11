@@ -1,0 +1,43 @@
+{
+  "name": "dynamic-form-builder-typesafe",
+  "version": "1.0.0",
+  "description": "🧠 Hệ thống Form Builder động – type-safe 100% với TypeScript nâng cao",
+  "main": "form-builder.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "tsc --watch",
+    "serve": "live-server --port=3000 --open=/index.html",
+    "start": "npm run build && npm run serve",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint *.ts --ext .ts"
+  },
+  "keywords": [
+    "typescript",
+    "form-builder",
+    "type-safe",
+    "generics",
+    "utility-types",
+    "conditional-types",
+    "union-types",
+    "type-narrowing"
+  ],
+  "author": "TypeScript Developer",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "live-server": "^1.2.2",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-repo/dynamic-form-builder-typesafe"
+  },
+  "bugs": {
+    "url": "https://github.com/your-repo/dynamic-form-builder-typesafe/issues"
+  },
+  "homepage": "https://github.com/your-repo/dynamic-form-builder-typesafe#readme"
+}
